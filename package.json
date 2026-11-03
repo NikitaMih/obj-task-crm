@@ -19,7 +19,8 @@
     "clsx": "^2.1.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-hook-form": "^7.91.0"
+    "react-hook-form": "^7.91.0",
+    "react-router": "^8.5.1"
   },
   "devDependencies": {
     "@types/react": "^19.1.13",

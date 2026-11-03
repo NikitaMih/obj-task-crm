@@ -15,12 +15,16 @@ export const TASK_STATUS = {
 
 export type Status = (typeof TASK_STATUS)[keyof typeof TASK_STATUS]
 
-export const SCREENS = {
-  OBJECTS: 'objects',
-  MINE: 'mine',
+export const ROUTES = {
+  HOME: '/',
+  LOGIN: '/login',
+  OBJECTS: '/objects',
+  OBJECT_PATTERN: '/objects/:objectId',
+  MY_TASKS: '/my-tasks',
+  TASK_PATTERN: '/tasks/:taskId',
+  object: (id: string) => `/objects/${id}`,
+  task: (id: string) => `/tasks/${id}`,
 } as const
-
-export type Screen = (typeof SCREENS)[keyof typeof SCREENS]
 
 export const EDITOR_KIND = {
   OBJECT: 'object',

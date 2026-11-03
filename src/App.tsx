@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { EDITOR_KIND, ROLES, SCREENS, TASK_STATUS, type EditorKind, type Screen } from './constants'
+import { Navigate, Route, Routes, useLocation, useMatch, useNavigate } from 'react-router'
+import { EDITOR_KIND, ROLES, ROUTES, TASK_STATUS, type EditorKind } from './constants'
 import { configured, type Status } from './lib'
 import {
   createObject,
@@ -14,11 +15,12 @@ import { useAuth } from '@/hooks/useAuth'
 import { useCrmData } from '@/hooks/useCrmData'
 import { useTaskHistory } from '@/hooks/useTaskHistory'
 import { AppShell } from '@/components/AppShell'
-import { LoginForm } from '@/components/LoginForm'
-import { ObjectList } from '@/components/ObjectList'
-import { ObjectDetails } from '@/components/ObjectDetails'
-import { MyTasks } from '@/components/MyTasks'
-import { TaskDetails } from '@/components/TaskDetails'
+import { LoginPage } from '@/pages/LoginPage'
+import { ObjectsPage } from '@/pages/ObjectsPage'
+import { ObjectPage } from '@/pages/ObjectPage'
+import { MyTasksPage } from '@/pages/MyTasksPage'
+import { TaskPage } from '@/pages/TaskPage'
+import { NotFoundPage } from '@/pages/NotFoundPage'
 import { ObjectEditor, type ObjectInput } from '@/components/ObjectEditor'
 import { TaskEditor, type TaskInput } from '@/components/TaskEditor'
 import { ReworkDialog } from '@/components/ReworkDialog'
@@ -28,6 +30,10 @@ import ui from '@/styles/ui.module.scss'
 type EditorState = { kind: EditorKind; id?: string } | null
 
 const App = () => {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const objectMatch = useMatch(ROUTES.OBJECT_PATTERN)
+  const taskMatch = useMatch(ROUTES.TASK_PATTERN)
   const { user, loading: authLoading, signIn, signOut } = useAuth()
   const {
     data,
@@ -41,9 +47,10 @@ const App = () => {
   const objects = data?.objects ?? []
   const tasks = data?.tasks ?? []
   const profiles = data?.profiles ?? []
-  const [screen, setScreen] = useState<Screen>(SCREENS.OBJECTS)
-  const [objectId, setObjectId] = useState<string | null>(null)
-  const [taskId, setTaskId] = useState<string | null>(null)
+  const taskId = taskMatch?.params.taskId ?? null
+  const selectedTask = tasks.find((task) => task.id === taskId)
+  const objectId = objectMatch?.params.objectId ?? selectedTask?.object_id ?? null
+  const selectedObject = objects.find((site) => site.id === objectId)
   const [editor, setEditor] = useState<EditorState>(null)
   const [reworkTaskId, setReworkTaskId] = useState<string | null>(null)
   const [actionError, setActionError] = useState('')
@@ -52,7 +59,7 @@ const App = () => {
     history,
     error: historyError,
     clearError: clearHistoryError,
-  } = useTaskHistory(user ? taskId : null, revision)
+  } = useTaskHistory(user && selectedTask ? taskId : null, revision)
   const error = actionError || dataError || historyError
 
   const clearErrors = () => {
@@ -110,7 +117,6 @@ const App = () => {
       editor?.id ? updateTask(editor.id, input) : createTask(input, user.id),
     )
     if (ok) {
-      if (editor?.id && taskId === editor.id) setObjectId(input.object_id)
       setEditor(null)
     }
   }
@@ -118,23 +124,15 @@ const App = () => {
   const deleteTask = async () => {
     if (!taskId || !window.confirm('Удалить задачу и её историю?')) return
     const ok = await run(() => removeTask(taskId))
-    if (ok) setTaskId(null)
+    if (ok) navigate(selectedTask ? ROUTES.object(selectedTask.object_id) : ROUTES.OBJECTS)
   }
 
   const deleteObject = async () => {
     if (!objectId || !window.confirm('Удалить объект вместе со всеми задачами и историей?')) return
     const ok = await run(() => removeObject(objectId))
-    if (ok) setObjectId(null)
+    if (ok) navigate(ROUTES.OBJECTS)
   }
 
-  const navigate = (next: Screen) => {
-    setScreen(next)
-    setObjectId(null)
-    setTaskId(null)
-  }
-
-  const selectedObject = objects.find((site) => site.id === objectId)
-  const selectedTask = tasks.find((task) => task.id === taskId)
   const objectTasks = tasks.filter((task) => task.object_id === objectId)
   const mine = tasks.filter((task) => task.assignee_id === user?.id)
   const nameOf = (id: string) =>
@@ -159,7 +157,16 @@ const App = () => {
         <p>Загружаем сессию…</p>
       </div>
     )
-  if (!user) return <LoginForm onSignIn={signIn} />
+  if (!user)
+    return location.pathname === ROUTES.LOGIN ? (
+      <LoginPage onSignIn={signIn} />
+    ) : (
+      <Navigate to={ROUTES.LOGIN} replace state={{ from: location.pathname }} />
+    )
+  if (location.pathname === ROUTES.LOGIN) {
+    const from = (location.state as { from?: string } | null)?.from
+    return <Navigate to={from ?? ROUTES.OBJECTS} replace />
+  }
   if (dataLoading)
     return (
       <div className={styles.setup}>
@@ -188,75 +195,12 @@ const App = () => {
       </div>
     )
 
-  let content
-  if (selectedTask) {
-    content = (
-      <TaskDetails
-        task={selectedTask}
-        history={history}
-        profile={profile}
-        objectName={objectName(selectedTask.object_id)}
-        nameOf={nameOf}
-        busy={busy}
-        onBack={() => setTaskId(null)}
-        onTransition={(status, requiresComment) => {
-          void transition(status, requiresComment)
-        }}
-        onEdit={() => setEditor({ kind: EDITOR_KIND.TASK, id: selectedTask.id })}
-        onDelete={() => {
-          void deleteTask()
-        }}
-      />
-    )
-  } else if (selectedObject) {
-    content = (
-      <ObjectDetails
-        site={selectedObject}
-        tasks={objectTasks}
-        role={profile.role}
-        nameOf={nameOf}
-        busy={busy}
-        onBack={() => setObjectId(null)}
-        onCreateTask={() => setEditor({ kind: EDITOR_KIND.TASK })}
-        onEdit={() => setEditor({ kind: EDITOR_KIND.OBJECT, id: selectedObject.id })}
-        onDelete={() => {
-          void deleteObject()
-        }}
-        onSelectTask={(task) => setTaskId(task.id)}
-      />
-    )
-  } else if (screen === SCREENS.MINE) {
-    content = (
-      <MyTasks
-        tasks={mine}
-        objectName={objectName}
-        onSelect={(task) => {
-          setObjectId(task.object_id)
-          setTaskId(task.id)
-        }}
-      />
-    )
-  } else {
-    content = (
-      <ObjectList
-        objects={objects}
-        tasks={tasks}
-        role={profile.role}
-        onSelect={setObjectId}
-        onCreate={() => setEditor({ kind: EDITOR_KIND.OBJECT })}
-      />
-    )
-  }
-
   return (
     <>
       <AppShell
         profile={profile}
-        screen={screen}
         selectedObject={selectedObject}
         selectedTask={selectedTask}
-        onNavigate={navigate}
-        onBackToObject={() => setTaskId(null)}
         onSignOut={logOut}
       >
         {error && (
@@ -265,7 +209,66 @@ const App = () => {
             <button onClick={clearErrors}>×</button>
           </div>
         )}
-        {content}
+        <Routes>
+          <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.OBJECTS} replace />} />
+          <Route
+            path={ROUTES.OBJECTS}
+            element={
+              <ObjectsPage
+                objects={objects}
+                tasks={tasks}
+                role={profile.role}
+                onCreate={() => setEditor({ kind: EDITOR_KIND.OBJECT })}
+              />
+            }
+          />
+          <Route
+            path={ROUTES.OBJECT_PATTERN}
+            element={
+              <ObjectPage
+                site={selectedObject}
+                tasks={objectTasks}
+                role={profile.role}
+                nameOf={nameOf}
+                busy={busy}
+                onCreateTask={() => setEditor({ kind: EDITOR_KIND.TASK })}
+                onEdit={() =>
+                  selectedObject && setEditor({ kind: EDITOR_KIND.OBJECT, id: selectedObject.id })
+                }
+                onDelete={() => void deleteObject()}
+              />
+            }
+          />
+          <Route
+            path={ROUTES.TASK_PATTERN}
+            element={
+              <TaskPage
+                task={selectedTask}
+                history={history}
+                profile={profile}
+                objectName={selectedTask ? objectName(selectedTask.object_id) : ''}
+                nameOf={nameOf}
+                busy={busy}
+                onTransition={(status, requiresComment) => void transition(status, requiresComment)}
+                onEdit={() =>
+                  selectedTask && setEditor({ kind: EDITOR_KIND.TASK, id: selectedTask.id })
+                }
+                onDelete={() => void deleteTask()}
+              />
+            }
+          />
+          <Route
+            path={ROUTES.MY_TASKS}
+            element={
+              profile.role === ROLES.EXECUTOR ? (
+                <MyTasksPage tasks={mine} objectName={objectName} />
+              ) : (
+                <Navigate to={ROUTES.OBJECTS} replace />
+              )
+            }
+          />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
       </AppShell>
 
       {editor?.kind === EDITOR_KIND.OBJECT && (

@@ -46,7 +46,7 @@
   display: grid;
   gap: 5px;
 
-  button {
+  a {
     width: 100%;
     background: none;
     border: 0;
@@ -58,6 +58,7 @@
     gap: 13px;
     align-items: center;
     font-size: 15px;
+    text-decoration: none;
 
     &::first-letter {
       font-size: 19px;
@@ -147,7 +148,7 @@
   overflow: hidden;
   white-space: nowrap;
 
-  button {
+  a {
     color: v.$color-breadcrumbs-link;
     border: 0;
     background: none;
@@ -214,7 +215,7 @@
       flex: 1;
       justify-content: flex-end;
 
-      button {
+      a {
         width: auto;
         padding: 8px;
 

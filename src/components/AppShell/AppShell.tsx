@@ -1,30 +1,27 @@
 import type { ReactNode } from 'react'
+import { Link, NavLink, useMatch } from 'react-router'
 import clsx from 'clsx'
-import { ROLE_LABEL, ROLES, SCREENS, type Screen } from '@/constants'
+import { ROLE_LABEL, ROLES, ROUTES } from '@/constants'
 import type { Profile, Site, Task } from '@/lib'
 import styles from './AppShell.module.scss'
 
 type AppShellProps = {
   profile: Profile
-  screen: Screen
   selectedObject?: Site
   selectedTask?: Task
-  onNavigate: (screen: Screen) => void
-  onBackToObject: () => void
   onSignOut: () => void
   children: ReactNode
 }
 
 export const AppShell = ({
   profile,
-  screen,
   selectedObject,
   selectedTask,
-  onNavigate,
-  onBackToObject,
   onSignOut,
   children,
 }: AppShellProps) => {
+  const onMyTasks = Boolean(useMatch(ROUTES.MY_TASKS))
+
   return (
     <div className={styles.app}>
       <aside className={styles.sidebar}>
@@ -35,19 +32,19 @@ export const AppShell = ({
           </div>
         </div>
         <nav>
-          <button
-            className={clsx(screen === SCREENS.OBJECTS && styles.active)}
-            onClick={() => onNavigate(SCREENS.OBJECTS)}
+          <NavLink
+            className={({ isActive }) => clsx(isActive && styles.active)}
+            to={ROUTES.OBJECTS}
           >
             ▤ <span>Объекты</span>
-          </button>
+          </NavLink>
           {profile.role === ROLES.EXECUTOR && (
-            <button
-              className={clsx(screen === SCREENS.MINE && styles.active)}
-              onClick={() => onNavigate(SCREENS.MINE)}
+            <NavLink
+              className={({ isActive }) => clsx(isActive && styles.active)}
+              to={ROUTES.MY_TASKS}
             >
               ◷ <span>Мои задачи</span>
-            </button>
+            </NavLink>
           )}
         </nav>
         <div className={styles.sideFoot}>
@@ -64,11 +61,17 @@ export const AppShell = ({
       <main className={styles.main}>
         <header className={styles.header}>
           <div className={styles.crumbs}>
-            <button onClick={() => onNavigate(SCREENS.OBJECTS)}>Объекты</button>
+            <Link to={ROUTES.OBJECTS}>Объекты</Link>
+            {onMyTasks && (
+              <>
+                {' '}
+                / <span>Мои задачи</span>
+              </>
+            )}
             {selectedObject && (
               <>
                 {' '}
-                / <button onClick={onBackToObject}>{selectedObject.name}</button>
+                / <Link to={ROUTES.object(selectedObject.id)}>{selectedObject.name}</Link>
               </>
             )}
             {selectedTask && (
