@@ -1,0 +1,91 @@
+@use '@/styles/variables' as v;
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 15% 10%, v.$color-login-glow, transparent 27%),
+    v.$color-login-background;
+  padding: 24px;
+}
+
+.login-brand {
+  color: v.$color-login-brand;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 26px;
+  margin-bottom: 27px;
+
+  span {
+    font-size: 13px;
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+  }
+}
+
+.login-card {
+  background: v.$color-white;
+  border: 1px solid v.$color-accent-border;
+  border-radius: v.$radius-large;
+  width: min(100%, 400px);
+  padding: 34px;
+  box-shadow: 0 16px 50px v.$color-login-shadow;
+  display: grid;
+  gap: 17px;
+
+  h1 {
+    font-size: 24px;
+    margin: 0;
+    letter-spacing: -0.04em;
+  }
+
+  p {
+    font-size: 12px;
+    color: v.$color-list-subtitle;
+    margin: -10px 0 5px;
+  }
+
+  label {
+    display: grid;
+    gap: 7px;
+    color: v.$color-form-label;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  input {
+    width: 100%;
+    border: 1px solid v.$color-form-border;
+    border-radius: v.$radius-small;
+    background: v.$color-white;
+    color: v.$color-form-text;
+    padding: 10px 11px;
+    outline: none;
+    font-size: 12px;
+
+    &:focus {
+      border-color: v.$color-focus;
+      box-shadow: 0 0 0 3px v.$color-focus-ring;
+    }
+
+    &[aria-invalid='true'] {
+      border-color: v.$color-error-text;
+    }
+  }
+
+  small {
+    font-size: 10px;
+    text-align: center;
+    color: v.$color-login-help;
+  }
+}
+
+.submit {
+  width: 100%;
+  margin-top: 5px;
+}

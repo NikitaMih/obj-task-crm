@@ -1,0 +1,104 @@
+// Base palette
+$color-white: #fff;
+$color-text: #1d2732;
+$color-page-background: #f7f9fb;
+$color-heading: #203442;
+$color-title: #172d3b;
+$color-muted: #92a3ad;
+$color-subtitle: #8797a2;
+$color-border: #e2eaee;
+$color-border-subtle: #edf1f3;
+$color-accent-border: #dce8e9;
+$color-card-shadow: #203e5207;
+$color-card-hover-shadow: #203e5214;
+
+// Actions and feedback
+$color-primary: #1b7f82;
+$color-primary-hover: #166b70;
+$color-secondary-text: #315162;
+$color-secondary-border: #dbe5e9;
+$color-secondary-hover: #f3f8f9;
+$color-eyebrow: #55a5a1;
+$color-back-link: #5f8f93;
+$color-danger: #b76560;
+$color-error-text: #a33c3c;
+$color-error-background: #fff0f0;
+$color-error-border: #f5cece;
+$color-focus: #58a9aa;
+$color-focus-ring: #58a9aa22;
+
+// Forms and content
+$color-form-label: #405766;
+$color-form-border: #d9e3e8;
+$color-form-text: #253e4d;
+$color-code-background: #e7efef;
+$color-setup-heading: #183a49;
+$color-count-background: #e9f0f2;
+$color-count-text: #68808c;
+$color-description: #5c6f7b;
+$color-fact-label: #94a3ab;
+$color-fact-value: #304756;
+$color-history-title: #2c4452;
+$color-history-meta: #96a5ae;
+$color-history-comment: #5b7280;
+$color-history-background: #f5f9f9;
+$color-history-marker: #4fa8a5;
+
+// Object and task lists
+$color-stats-border: #e4ebef;
+$color-stats-label: #8b9aa4;
+$color-stats-value: #203644;
+$color-card-hover-border: #89babc;
+$color-card-title: #1c3543;
+$color-card-icon-background: #eaf6f5;
+$color-card-icon: #48a4a1;
+$color-card-meta: #7f929e;
+$color-card-link: #29888b;
+$color-list-muted: #8a9ba5;
+$color-list-subtitle: #8da0aa;
+$color-list-title: #213845;
+$color-list-arrow: #8ba5ad;
+$color-list-hover: #f8fbfb;
+
+// Statuses
+$color-status-new-background: #eaf1fa;
+$color-status-new-text: #4f7cad;
+$color-status-progress-background: #e8f4f7;
+$color-status-progress-text: #3e8fa1;
+$color-status-review-background: #fff3db;
+$color-status-review-text: #a47821;
+$color-status-accepted-background: #e4f6ed;
+$color-status-accepted-text: #37845e;
+$color-status-rework-background: #fbece7;
+$color-status-rework-text: #b76f50;
+
+// Layout and authentication
+$color-sidebar-background: #102a3a;
+$color-sidebar-text: #dce8ef;
+$color-sidebar-brand-border: #598398;
+$color-sidebar-brand-icon: #8ed4d3;
+$color-sidebar-nav: #a9beca;
+$color-sidebar-active: #1d4051;
+$color-sidebar-divider: #2c4c5b;
+$color-sidebar-signout: #9cb5c1;
+$color-avatar-background: #6cbcbc;
+$color-avatar-text: #10303b;
+$color-user-meta: #9bb2bf;
+$color-header-border: #e5ebef;
+$color-breadcrumbs: #8a9aa6;
+$color-breadcrumbs-link: #647989;
+$color-breadcrumbs-current: #233b49;
+$color-header-meta: #8b9da9;
+$color-online: #3db591;
+$color-backdrop: #102a3a75;
+$color-dialog-shadow: #102a3a40;
+$color-login-glow: #dff4f0;
+$color-login-background: #f4f8f8;
+$color-login-brand: #143744;
+$color-login-shadow: #214b5210;
+$color-login-help: #9caab2;
+$radius-small: 7px;
+$radius-medium: 10px;
+$radius-large: 12px;
+$breakpoint-tablet: 900px;
+$breakpoint-mobile: 600px;

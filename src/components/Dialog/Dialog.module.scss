@@ -1,0 +1,77 @@
+@use '@/styles/variables' as v;
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: v.$color-backdrop;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  z-index: 5;
+}
+
+.modal {
+  background: v.$color-white;
+  border-radius: v.$radius-large;
+  width: min(100%, 480px);
+  padding: 26px;
+  box-shadow: 0 20px 70px v.$color-dialog-shadow;
+  display: grid;
+  gap: 17px;
+
+  h2 {
+    font-size: 20px;
+    margin: 8px 0 0;
+  }
+
+  label {
+    display: grid;
+    gap: 7px;
+    color: v.$color-form-label;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    border: 1px solid v.$color-form-border;
+    border-radius: v.$radius-small;
+    background: v.$color-white;
+    color: v.$color-form-text;
+    padding: 10px 11px;
+    outline: none;
+    font-size: 12px;
+
+    &:focus {
+      border-color: v.$color-focus;
+      box-shadow: 0 0 0 3px v.$color-focus-ring;
+    }
+
+    &[aria-invalid='true'] {
+      border-color: v.$color-error-text;
+    }
+  }
+}
+
+.modal-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.close {
+  border: 0;
+  background: transparent;
+  color: v.$color-list-muted;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 5px;
+}

@@ -1,0 +1,130 @@
+@use '@/styles/variables' as v;
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 36px;
+
+  > div {
+    background: v.$color-white;
+    border: 1px solid v.$color-stats-border;
+    border-radius: v.$radius-medium;
+    padding: 21px 24px;
+    box-shadow: 0 3px 14px v.$color-card-shadow;
+  }
+
+  small,
+  strong {
+    display: block;
+  }
+
+  small {
+    color: v.$color-stats-label;
+    font-size: 11px;
+  }
+
+  strong {
+    color: v.$color-stats-value;
+    font-size: 26px;
+    letter-spacing: -0.05em;
+    margin-top: 7px;
+  }
+}
+
+.objects-title {
+  margin-bottom: 15px;
+}
+
+.object-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.object-card {
+  text-align: left;
+  background: v.$color-white;
+  border: 1px solid v.$color-border;
+  border-radius: v.$radius-medium;
+  padding: 20px;
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 3px 14px v.$color-card-shadow;
+  transition: 0.15s;
+
+  &:hover {
+    border-color: v.$color-card-hover-border;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px v.$color-card-hover-shadow;
+  }
+
+  h3 {
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 16px 0 5px;
+    color: v.$color-card-title;
+  }
+
+  p {
+    color: v.$color-list-muted;
+    font-size: 11px;
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+.card-icon {
+  background: v.$color-card-icon-background;
+  color: v.$color-card-icon;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+}
+
+.card-bottom {
+  border-top: 1px solid v.$color-border-subtle;
+  padding-top: 14px;
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  color: v.$color-card-meta;
+  font-size: 11px;
+
+  span:last-child {
+    color: v.$color-card-link;
+    font-weight: 700;
+  }
+}
+
+@media (width <= v.$breakpoint-tablet) {
+  .object-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width <= v.$breakpoint-mobile) {
+  .stats {
+    gap: 7px;
+
+    > div {
+      padding: 15px;
+    }
+
+    strong {
+      font-size: 22px;
+    }
+  }
+
+  .object-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .object-card {
+    min-height: 160px;
+  }
+}

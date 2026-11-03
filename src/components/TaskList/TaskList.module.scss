@@ -1,0 +1,61 @@
+@use '@/styles/variables' as v;
+
+.task-list {
+  display: grid;
+}
+
+.task-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  text-align: left;
+  border: 0;
+  border-bottom: 1px solid v.$color-border-subtle;
+  background: v.$color-white;
+  padding: 17px 24px;
+  width: 100%;
+
+  &:last-child {
+    border-bottom: 0;
+    border-radius: 0 0 10px 10px;
+  }
+
+  &:hover {
+    background: v.$color-list-hover;
+  }
+}
+
+.task-title {
+  flex: 1;
+  min-width: 0;
+
+  b,
+  small {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  b {
+    font-size: 12px;
+    color: v.$color-list-title;
+  }
+
+  small {
+    font-size: 10px;
+    color: v.$color-list-subtitle;
+    margin-top: 5px;
+  }
+}
+
+.row-arrow {
+  color: v.$color-list-arrow;
+}
+
+@media (width <= v.$breakpoint-mobile) {
+  .task-row {
+    padding: 15px;
+    gap: 8px;
+  }
+}

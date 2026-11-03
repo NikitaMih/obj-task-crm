@@ -1,0 +1,37 @@
+@use '@/styles/variables' as v;
+
+.setup {
+  max-width: 520px;
+  margin: 15vh auto;
+  padding: 25px;
+  line-height: 1.7;
+
+  h1 {
+    color: v.$color-setup-heading;
+  }
+
+  code {
+    background: v.$color-code-background;
+    padding: 2px 4px;
+    border-radius: 3px;
+  }
+}
+
+.error-banner {
+  color: v.$color-error-text;
+  background: v.$color-error-background;
+  border: 1px solid v.$color-error-border;
+  padding: 11px 14px;
+  border-radius: v.$radius-small;
+  font-size: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    border: 0;
+    background: none;
+    color: inherit;
+    font-size: 18px;
+  }
+}

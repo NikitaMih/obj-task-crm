@@ -1,0 +1,120 @@
+@use '@/styles/variables' as v;
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(270px, 1fr);
+  gap: 17px;
+}
+
+.description {
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  min-height: 85px;
+  color: v.$color-description;
+  margin: 20px 0;
+}
+
+.facts {
+  border-top: 1px solid v.$color-border-subtle;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding-top: 20px;
+
+  small,
+  b {
+    display: block;
+  }
+
+  small {
+    font-size: 10px;
+    color: v.$color-fact-label;
+  }
+
+  b {
+    font-size: 11px;
+    margin-top: 6px;
+    color: v.$color-fact-value;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+.history h2 {
+  margin-bottom: 20px;
+}
+
+.timeline {
+  border-left: 1px solid v.$color-accent-border;
+  margin-left: 6px;
+  padding-left: 20px;
+}
+
+.event {
+  position: relative;
+  padding: 0 0 24px;
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+
+  b,
+  small {
+    display: block;
+  }
+
+  b {
+    font-size: 11px;
+    color: v.$color-history-title;
+  }
+
+  small {
+    font-size: 10px;
+    color: v.$color-history-meta;
+    margin-top: 5px;
+  }
+
+  p {
+    font-size: 11px;
+    color: v.$color-history-comment;
+    background: v.$color-history-background;
+    border-radius: 5px;
+    padding: 8px;
+    margin: 9px 0 0;
+  }
+}
+
+.event-dot {
+  position: absolute;
+  left: -25px;
+  top: 3px;
+  width: 9px;
+  height: 9px;
+  background: v.$color-history-marker;
+  border: 2px solid v.$color-white;
+  box-shadow: 0 0 0 1px v.$color-history-marker;
+  border-radius: 50%;
+}
+
+.muted {
+  color: v.$color-muted;
+  font-size: 12px;
+}
+
+@media (width <= v.$breakpoint-tablet) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (width <= v.$breakpoint-mobile) {
+  .facts {
+    grid-template-columns: 1fr 1fr;
+  }
+}
